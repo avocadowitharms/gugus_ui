@@ -1,4 +1,3 @@
-import 'dart:ui' show FontFeature;
 import 'package:flutter/material.dart';
 
 /// A sleek pill badge showing metric trend changes with up/down arrows

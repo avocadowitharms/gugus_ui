@@ -1,6 +1,6 @@
 import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
-import '../theme/pip_ui_theme.dart';
+import '../theme/gugus_ui_theme.dart';
 
 /// A standalone frosted glass floating pill/circle container control.
 ///

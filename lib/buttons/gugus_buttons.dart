@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pip_glass_button.dart';
+import 'gugus_glass_button.dart';
 
 /// Style variants for [PipActionButton].
 enum PipButtonVariant {

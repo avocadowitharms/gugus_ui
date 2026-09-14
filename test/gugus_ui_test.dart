@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pip_stats/pip_ui/pip_ui.dart';
+import 'package:gugus_ui/gugus_ui.dart';
 
 void main() {
   group('Pip UI Kit Tests', () {
@@ -201,6 +201,117 @@ void main() {
 
       expect(find.text('Pip UI Component Kit'), findsOneWidget);
       expect(find.byType(PipGlassNavBar), findsOneWidget);
+      expect(find.text('5. Copyright & Creator Footer'), findsOneWidget);
+    });
+
+    testWidgets('GugusCopyright displays default heart icon, tagline, and creator text', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: GugusCopyright(),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(CupertinoIcons.heart_fill), findsOneWidget);
+      expect(find.text('Made with love'), findsOneWidget);
+      expect(find.text('gugus. Software&Things © 2026'), findsOneWidget);
+    });
+
+    testWidgets('GugusCopyright supports custom parameters and hiding icon', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: GugusCopyright(
+              tagline: 'Designed in Switzerland',
+              copyright: '© 2026 Custom Brand',
+              showIcon: false,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(CupertinoIcons.heart_fill), findsNothing);
+      expect(find.text('Designed in Switzerland'), findsOneWidget);
+      expect(find.text('© 2026 Custom Brand'), findsOneWidget);
+    });
+
+    testWidgets('GugusCopyright fixed mode with custom opacity applies Opacity widget', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: GugusCopyright.fixed(
+              opacity: 0.5,
+              tagline: 'Fixed Footer',
+            ),
+          ),
+        ),
+      );
+
+      final opacityFinder = find.byWidgetPredicate(
+        (widget) => widget is Opacity && widget.opacity == 0.5,
+      );
+      expect(opacityFinder, findsOneWidget);
+    });
+
+    testWidgets('GugusCopyright revealed mode smoothly toggles animated opacity', (tester) async {
+      bool isRevealed = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: StatefulBuilder(
+              builder: (context, setState) => GugusCopyright.revealed(
+                isRevealed: isRevealed,
+                opacity: 0.8,
+                tagline: 'Revealed Footer',
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Initially hidden (opacity: 0.0)
+      final initialAnimatedOpacity = tester.widget<AnimatedOpacity>(
+        find.byType(AnimatedOpacity),
+      );
+      expect(initialAnimatedOpacity.opacity, 0.0);
+
+      // Reveal footer
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: GugusCopyright.revealed(
+              isRevealed: true,
+              opacity: 0.8,
+              tagline: 'Revealed Footer',
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final revealedAnimatedOpacity = tester.widget<AnimatedOpacity>(
+        find.byType(AnimatedOpacity),
+      );
+      expect(revealedAnimatedOpacity.opacity, 0.8);
+    });
+
+    testWidgets('PipCopyright alias renders identically', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: PipCopyright(
+              tagline: 'Pip Kit',
+              copyright: 'All rights reserved',
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Pip Kit'), findsOneWidget);
+      expect(find.text('All rights reserved'), findsOneWidget);
     });
   });
 }

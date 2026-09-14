@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pip_segmented_tabs.dart';
+import 'gugus_segmented_tabs.dart';
 
 /// Supported default metric / download dimensions.
 enum PipMetricDimension {

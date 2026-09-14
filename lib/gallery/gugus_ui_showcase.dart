@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../navbar/pip_glass_navbar.dart';
-import '../tabs/pip_segmented_tabs.dart';
-import '../tabs/pip_theme_tabs.dart';
-import '../tabs/pip_week_tabs.dart';
-import '../tabs/pip_download_tabs.dart';
-import '../buttons/pip_glass_button.dart';
-import '../buttons/pip_buttons.dart';
-import '../buttons/pip_trend_badge.dart';
-import '../layout/pip_scaffold.dart';
-import '../layout/pip_header.dart';
+import '../navbar/gugus_glass_navbar.dart';
+import '../tabs/gugus_segmented_tabs.dart';
+import '../tabs/gugus_theme_tabs.dart';
+import '../tabs/gugus_week_tabs.dart';
+import '../tabs/gugus_download_tabs.dart';
+import '../buttons/gugus_glass_button.dart';
+import '../buttons/gugus_buttons.dart';
+import '../buttons/gugus_trend_badge.dart';
+import '../layout/gugus_scaffold.dart';
+import '../layout/gugus_header.dart';
+import '../layout/gugus_copyright.dart';
 
 /// An interactive showcase gallery demonstrating all standalone Pip UI components.
 ///
@@ -291,6 +292,42 @@ class _PipUiShowcaseState extends State<PipUiShowcase> {
                 PipTrendBadge(change: -3.4),
                 PipTrendBadge(change: -12.9),
                 PipTrendBadge(change: -8.1, lowerIsBetter: true),
+              ],
+            ),
+          ),
+
+          // 5. Standalone Copyright Footer
+          const PipSectionTitle(
+            '5. Copyright & Creator Footer',
+            subtitle: 'Configurable heart icon, tagline, custom opacity, and gradual reveal',
+          ),
+          _buildCard(
+            context,
+            child: Column(
+              children: [
+                const GugusCopyright(
+                  tagline: 'Made with love',
+                  copyright: 'gugus. Software&Things © 2026',
+                ),
+                const SizedBox(height: 20),
+                const Divider(height: 1),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    GugusCopyright.fixed(
+                      opacity: 0.45,
+                      tagline: 'Fixed (45% Opacity)',
+                      copyright: 'Dev & Design',
+                    ),
+                    GugusCopyright.revealed(
+                      isRevealed: true,
+                      opacity: 0.85,
+                      tagline: 'Revealed on Scroll',
+                      copyright: 'Smooth Animated Opacity',
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

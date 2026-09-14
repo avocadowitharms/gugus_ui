@@ -1,0 +1,18 @@
+name: gugus_ui
+description: A frosted-glass design system and component library for Flutter.
+version: 0.1.0
+repository: https://github.com/avocadowitharms/gugus_ui
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

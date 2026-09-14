@@ -1,7 +1,7 @@
 import 'dart:ui' show ImageFilter;
 import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
-import '../theme/pip_ui_theme.dart';
+import '../theme/gugus_ui_theme.dart';
 
 /// Navigation item model for [PipGlassNavBar].
 class PipNavItem {

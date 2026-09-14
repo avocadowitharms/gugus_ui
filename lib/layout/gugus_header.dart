@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../buttons/pip_glass_button.dart';
+import '../buttons/gugus_glass_button.dart';
 
 /// Clean modern page header with a title, optional subtitle, and trailing action slot.
 class PipHeader extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pip_segmented_tabs.dart';
+import 'gugus_segmented_tabs.dart';
 
 /// Pre-configured theme tabs selector for System, Light, and Dark modes.
 ///
