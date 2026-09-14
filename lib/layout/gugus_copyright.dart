@@ -272,5 +272,5 @@ class GugusCopyright extends StatelessWidget {
   }
 }
 
-/// Alias for [GugusCopyright] following Pip UI design naming conventions.
+/// Alias for [GugusCopyright] following gugus UI design naming conventions.
 typedef PipCopyright = GugusCopyright;

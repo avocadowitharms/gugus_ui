@@ -1,7 +1,7 @@
 import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 
-/// Styling tokens and helpers for Pip UI frosted glass aesthetic.
+/// Styling tokens and helpers for gugus UI frosted glass aesthetic.
 class PipUiTheme {
   const PipUiTheme._();
 
@@ -106,7 +106,7 @@ class PipUiTheme {
   static ImageFilter defaultBlur({double sigma = 30.0}) =>
       ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
 
-  /// Pre-configured light theme matching Gugus / Pip UI styling.
+  /// Pre-configured light theme matching Gugus / gugus UI styling.
   static ThemeData lightTheme() {
     return ThemeData(
       useMaterial3: true,
@@ -116,7 +116,7 @@ class PipUiTheme {
     );
   }
 
-  /// Pre-configured dark theme matching Gugus / Pip UI styling.
+  /// Pre-configured dark theme matching Gugus / gugus UI styling.
   static ThemeData darkTheme() {
     return ThemeData(
       useMaterial3: true,

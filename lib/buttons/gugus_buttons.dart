@@ -10,7 +10,7 @@ enum PipButtonVariant {
   ghost,
 }
 
-/// A modern button component matching Pip UI aesthetics with various style variants,
+/// A modern button component matching gugus UI aesthetics with various style variants,
 /// loading spinner support, icons, and customizable borders.
 class PipActionButton extends StatelessWidget {
   final String label;

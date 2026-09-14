@@ -1,4 +1,4 @@
-/// Pip UI: A standalone, frosted-glass design system & component library for Flutter.
+/// GUGUS UI: A standalone, frosted-glass design system & component library for Flutter.
 ///
 /// Includes:
 /// - Floating Glass Capsule Navigation Bar ([PipGlassNavBar], [PipNavItem])
