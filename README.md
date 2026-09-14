@@ -4,7 +4,7 @@ A frosted-glass design system and component library for Flutter.
 
 ## Installation
 
-Once published to pub.dev, add the package from your Flutter project:
+Add the package from your Flutter project: ( not yet possible ) 
 
 ```shell
 flutter pub add gugus_ui
