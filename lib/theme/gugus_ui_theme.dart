@@ -105,4 +105,28 @@ class PipUiTheme {
   // Backdrop filter
   static ImageFilter defaultBlur({double sigma = 30.0}) =>
       ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
+
+  /// Pre-configured light theme matching Gugus / Pip UI styling.
+  static ThemeData lightTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      colorSchemeSeed: primaryLight,
+      scaffoldBackgroundColor: const Color(0xfff5f7fb),
+    );
+  }
+
+  /// Pre-configured dark theme matching Gugus / Pip UI styling.
+  static ThemeData darkTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      colorSchemeSeed: primaryDark,
+      scaffoldBackgroundColor: const Color(0xff0e1117),
+    );
+  }
 }
+
+/// Alias for [PipUiTheme] for package name consistency.
+typedef GugusUiTheme = PipUiTheme;
+

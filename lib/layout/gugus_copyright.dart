@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
 
 /// Style variants or reveal modes for [GugusCopyright].
@@ -24,7 +23,7 @@ class GugusCopyright extends StatelessWidget {
   /// Custom widget replacing the default icon. If provided, [iconData] is ignored.
   final Widget? icon;
 
-  /// IconData to display above the tagline. Defaults to [CupertinoIcons.heart_fill].
+  /// IconData to display above the tagline. Defaults to [Icons.favorite_rounded].
   final IconData? iconData;
 
   /// Whether to show the top icon. Defaults to `true`.
@@ -94,7 +93,7 @@ class GugusCopyright extends StatelessWidget {
     String? copyright,
     this.tagline = 'Made with love',
     this.icon,
-    this.iconData = CupertinoIcons.heart_fill,
+    this.iconData = Icons.favorite_rounded,
     this.showIcon = true,
     this.iconColor = Colors.redAccent,
     this.iconSize = 15.0,
@@ -123,7 +122,7 @@ class GugusCopyright extends StatelessWidget {
     String? copyright,
     this.tagline = 'Made with love',
     this.icon,
-    this.iconData = CupertinoIcons.heart_fill,
+    this.iconData = Icons.favorite_rounded,
     this.showIcon = true,
     this.iconColor = Colors.redAccent,
     this.iconSize = 15.0,
@@ -153,7 +152,7 @@ class GugusCopyright extends StatelessWidget {
     String? copyright,
     this.tagline = 'Made with love',
     this.icon,
-    this.iconData = CupertinoIcons.heart_fill,
+    this.iconData = Icons.favorite_rounded,
     this.showIcon = true,
     this.iconColor = Colors.redAccent,
     this.iconSize = 15.0,
@@ -220,7 +219,7 @@ class GugusCopyright extends StatelessWidget {
         if (showIcon) ...[
           icon ??
               Icon(
-                iconData ?? CupertinoIcons.heart_fill,
+                iconData ?? Icons.favorite_rounded,
                 color: iconColor ?? Colors.redAccent,
                 size: iconSize,
               ),

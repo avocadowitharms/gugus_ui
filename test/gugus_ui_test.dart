@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gugus_ui/gugus_ui.dart';
 
 void main() {
-  group('Pip UI Kit Tests', () {
+  group('gugus UI Kit Tests', () {
     testWidgets('PipGlassNavBar renders items and responds to taps', (tester) async {
       int selectedIndex = 0;
 
@@ -17,13 +16,13 @@ void main() {
               items: const [
                 PipNavItem(
                   label: 'Overview',
-                  icon: CupertinoIcons.chart_bar,
-                  selectedIcon: CupertinoIcons.chart_bar_alt_fill,
+                  icon: Icons.bar_chart_rounded,
+                  selectedIcon: Icons.insert_chart_rounded,
                 ),
                 PipNavItem(
                   label: 'Reviews',
-                  icon: CupertinoIcons.chat_bubble_2,
-                  selectedIcon: CupertinoIcons.chat_bubble_2_fill,
+                  icon: Icons.chat_bubble_outline_rounded,
+                  selectedIcon: Icons.chat_bubble_rounded,
                   badge: '5',
                 ),
               ],
@@ -35,7 +34,7 @@ void main() {
       expect(find.byType(PipGlassNavBar), findsOneWidget);
       expect(find.text('5'), findsOneWidget);
 
-      await tester.tap(find.byIcon(CupertinoIcons.chat_bubble_2));
+      await tester.tap(find.byIcon(Icons.chat_bubble_outline_rounded));
       await tester.pumpAndSettle();
 
       expect(selectedIndex, 1);
@@ -192,16 +191,41 @@ void main() {
       expect(find.byIcon(Icons.arrow_downward_rounded), findsOneWidget);
     });
 
-    testWidgets('PipUiShowcase renders cleanly without errors', (tester) async {
+    testWidgets('PipUiShowcase renders cleanly without errors and switches theme', (tester) async {
+      tester.view.physicalSize = const Size(1200, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      ThemeMode? switchedTheme;
+
       await tester.pumpWidget(
-        const MaterialApp(
-          home: PipUiShowcase(),
+        MaterialApp(
+          home: PipUiShowcase(
+            onThemeModeChanged: (mode) => switchedTheme = mode,
+          ),
         ),
       );
 
-      expect(find.text('Pip UI Component Kit'), findsOneWidget);
+      expect(find.text('gugus UI Component Kit'), findsOneWidget);
       expect(find.byType(PipGlassNavBar), findsOneWidget);
       expect(find.text('5. Copyright & Creator Footer'), findsOneWidget);
+
+      // Tap Light Mode icon tab
+      await tester.tap(find.byIcon(Icons.light_mode_rounded));
+      await tester.pumpAndSettle();
+
+      expect(switchedTheme, ThemeMode.light);
+      expect(find.text('Light'), findsOneWidget);
+
+      // Tap Dark Mode icon tab
+      await tester.tap(find.byIcon(Icons.dark_mode_rounded));
+      await tester.pumpAndSettle();
+
+      expect(switchedTheme, ThemeMode.dark);
+      expect(find.text('Dark'), findsOneWidget);
     });
 
     testWidgets('GugusCopyright displays default heart icon, tagline, and creator text', (tester) async {
@@ -213,7 +237,7 @@ void main() {
         ),
       );
 
-      expect(find.byIcon(CupertinoIcons.heart_fill), findsOneWidget);
+      expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
       expect(find.text('Made with love'), findsOneWidget);
       expect(find.text('gugus. Software&Things © 2026'), findsOneWidget);
     });
@@ -231,7 +255,7 @@ void main() {
         ),
       );
 
-      expect(find.byIcon(CupertinoIcons.heart_fill), findsNothing);
+      expect(find.byIcon(Icons.favorite_rounded), findsNothing);
       expect(find.text('Designed in Switzerland'), findsOneWidget);
       expect(find.text('© 2026 Custom Brand'), findsOneWidget);
     });

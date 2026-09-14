@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../navbar/gugus_glass_navbar.dart';
 import '../tabs/gugus_segmented_tabs.dart';
@@ -11,12 +10,20 @@ import '../buttons/gugus_trend_badge.dart';
 import '../layout/gugus_scaffold.dart';
 import '../layout/gugus_header.dart';
 import '../layout/gugus_copyright.dart';
+import '../theme/gugus_ui_theme.dart';
 
-/// An interactive showcase gallery demonstrating all standalone Pip UI components.
+/// An interactive showcase gallery demonstrating all standalone gugus UI components.
 ///
 /// Can be embedded into any Flutter app or run standalone.
 class PipUiShowcase extends StatefulWidget {
-  const PipUiShowcase({super.key});
+  final ThemeMode initialThemeMode;
+  final ValueChanged<ThemeMode>? onThemeModeChanged;
+
+  const PipUiShowcase({
+    super.key,
+    this.initialThemeMode = ThemeMode.system,
+    this.onThemeModeChanged,
+  });
 
   @override
   State<PipUiShowcase> createState() => _PipUiShowcaseState();
@@ -24,7 +31,7 @@ class PipUiShowcase extends StatefulWidget {
 
 class _PipUiShowcaseState extends State<PipUiShowcase> {
   int _navIndex = 0;
-  ThemeMode _selectedTheme = ThemeMode.system;
+  late ThemeMode _selectedTheme;
   int _selectedPeriod = 7;
   PipMetricDimension _selectedMetric = PipMetricDimension.downloads;
   String _selectedCustomTab = 'Charts';
@@ -32,126 +39,162 @@ class _PipUiShowcaseState extends State<PipUiShowcase> {
   double _blurSigma = 30.0;
   int _clickCount = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _selectedTheme = widget.initialThemeMode;
+  }
+
+  @override
+  void didUpdateWidget(covariant PipUiShowcase oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialThemeMode != widget.initialThemeMode) {
+      _selectedTheme = widget.initialThemeMode;
+    }
+  }
+
   final List<PipNavItem> _navItems = const [
     PipNavItem(
       label: 'Overview',
-      icon: CupertinoIcons.chart_bar,
-      selectedIcon: CupertinoIcons.chart_bar_alt_fill,
+      icon: Icons.bar_chart_rounded,
+      selectedIcon: Icons.insert_chart_rounded,
     ),
     PipNavItem(
       label: 'Reviews',
-      icon: CupertinoIcons.chat_bubble_2,
-      selectedIcon: CupertinoIcons.chat_bubble_2_fill,
+      icon: Icons.chat_bubble_outline_rounded,
+      selectedIcon: Icons.chat_bubble_rounded,
       badge: '3',
     ),
     PipNavItem(
       label: 'Apps',
-      icon: CupertinoIcons.square_grid_2x2,
-      selectedIcon: CupertinoIcons.square_grid_2x2_fill,
+      icon: Icons.grid_view_rounded,
+      selectedIcon: Icons.apps_rounded,
     ),
     PipNavItem(
       label: 'Profile',
-      icon: CupertinoIcons.person,
-      selectedIcon: CupertinoIcons.person_fill,
+      icon: Icons.person_outline_rounded,
+      selectedIcon: Icons.person_rounded,
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return PipScaffold(
-      bottomNavigationBar: PipGlassNavBar(
-        items: _navItems,
-        currentIndex: _navIndex,
-        blurSigma: _blurSigma,
-        onTap: (index) {
-          setState(() => _navIndex = index);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              duration: const Duration(milliseconds: 900),
-              content: Text('Switched to ${_navItems[index].label} Tab'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        },
-      ),
-      child: PipPageLayout(
-        children: [
-          PipHeader(
-            title: 'Pip UI Component Kit',
-            subtitle: 'Standalone Frosted Glass UI for any Flutter App',
-            showSettingsButton: true,
-            onSettingsTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Header Glass Action tapped!'),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
-          ),
+    final isSystemDark = MediaQuery.platformBrightnessOf(context) == Brightness.dark;
+    final ThemeData activeTheme;
+    switch (_selectedTheme) {
+      case ThemeMode.light:
+        activeTheme = GugusUiTheme.lightTheme();
+        break;
+      case ThemeMode.dark:
+        activeTheme = GugusUiTheme.darkTheme();
+        break;
+      case ThemeMode.system:
+        activeTheme = isSystemDark ? GugusUiTheme.darkTheme() : GugusUiTheme.lightTheme();
+        break;
+    }
 
-          // 1. Navigation Bar Preview Card
-          const PipSectionTitle(
-            '1. Floating Glass Navbar',
-            subtitle: 'Capsule bar with frosted blur, active pill, and badges',
-          ),
-          _buildCard(
-            context,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return AnimatedTheme(
+      data: activeTheme,
+      duration: const Duration(milliseconds: 260),
+      child: Builder(
+        builder: (context) {
+          return PipScaffold(
+            bottomNavigationBar: PipGlassNavBar(
+              items: _navItems,
+              currentIndex: _navIndex,
+              blurSigma: _blurSigma,
+              onTap: (index) {
+                setState(() => _navIndex = index);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    duration: const Duration(milliseconds: 900),
+                    content: Text('Switched to ${_navItems[index].label} Tab'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+            ),
+            child: PipPageLayout(
               children: [
-                Text(
-                  'Active Tab: ${_navItems[_navIndex].label} (Index: $_navIndex)',
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    const Text('Blur Intensity: '),
-                    Expanded(
-                      child: Slider(
-                        value: _blurSigma,
-                        min: 5.0,
-                        max: 50.0,
-                        divisions: 9,
-                        label: '${_blurSigma.toInt()} px',
-                        onChanged: (val) => setState(() => _blurSigma = val),
+                PipHeader(
+                  title: 'gugus UI Component Kit',
+                  subtitle: 'Standalone Frosted Glass UI for any Flutter App',
+                  showSettingsButton: true,
+                  onSettingsTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Header Glass Action tapped!'),
+                        behavior: SnackBarBehavior.floating,
                       ),
-                    ),
-                    Text('${_blurSigma.toInt()} px', style: const TextStyle(fontWeight: FontWeight.bold)),
-                  ],
+                    );
+                  },
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  'The floating navbar is pinned below at the bottom of the screen with smooth backdrop filter blur.',
-                  style: TextStyle(fontSize: 12.5, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
 
-          // 2. Tabs: Theme, Week, Downloads
-          const PipSectionTitle(
-            '2. Segmented Tabs & Selectors',
-            subtitle: 'Smooth sliding pills with icons, labels, and micro-animations',
-          ),
+                // 1. Navigation Bar Preview Card
+                const PipSectionTitle(
+                  '1. Floating Glass Navbar',
+                  subtitle: 'Capsule bar with frosted blur, active pill, and badges',
+                ),
+                _buildCard(
+                  context,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Active Tab: ${_navItems[_navIndex].label} (Index: $_navIndex)',
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Text('Blur Intensity: '),
+                          Expanded(
+                            child: Slider(
+                              value: _blurSigma,
+                              min: 5.0,
+                              max: 50.0,
+                              divisions: 9,
+                              label: '${_blurSigma.toInt()} px',
+                              onChanged: (val) => setState(() => _blurSigma = val),
+                            ),
+                          ),
+                          Text('${_blurSigma.toInt()} px', style: const TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'The floating navbar is pinned below at the bottom of the screen with smooth backdrop filter blur.',
+                        style: TextStyle(fontSize: 12.5, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
 
-          _buildCard(
-            context,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Theme Tab
-                const Text(
-                  'A. Theme Mode Tabs (System / Light / Dark)',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
+                // 2. Tabs: Theme, Week, Downloads
+                const PipSectionTitle(
+                  '2. Segmented Tabs & Selectors',
+                  subtitle: 'Smooth sliding pills with icons, labels, and micro-animations',
                 ),
-                const SizedBox(height: 10),
-                PipThemeTabs(
-                  selected: _selectedTheme,
-                  onChanged: (mode) => setState(() => _selectedTheme = mode),
-                ),
-                const SizedBox(height: 20),
+
+                _buildCard(
+                  context,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Theme Tab
+                      const Text(
+                        'A. Theme Mode Tabs (System / Light / Dark)',
+                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5),
+                      ),
+                      const SizedBox(height: 10),
+                      PipThemeTabs(
+                        selected: _selectedTheme,
+                        onChanged: (mode) {
+                          setState(() => _selectedTheme = mode);
+                          widget.onThemeModeChanged?.call(mode);
+                        },
+                      ),
+                      const SizedBox(height: 20),
 
                 // Week / Period Tab
                 const Text(
@@ -336,6 +379,9 @@ class _PipUiShowcaseState extends State<PipUiShowcase> {
         ],
       ),
     );
+        },
+      ),
+    );
   }
 
   Widget _buildCard(BuildContext context, {required Widget child}) {
@@ -355,3 +401,7 @@ class _PipUiShowcaseState extends State<PipUiShowcase> {
     );
   }
 }
+
+/// Alias for [PipUiShowcase] for package name consistency.
+typedef GugusUiShowcase = PipUiShowcase;
+
